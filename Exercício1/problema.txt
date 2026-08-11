@@ -1,0 +1,35 @@
+Alteração em Lista Encadeada
+Problema
+
+No arquivo lista_encadeada.c, implemente a função void altera(TLista li, int vantigo, int vnovo)* que altera o valor do campo INFO de uma lista encadeada li, substituindo o valor vantigo pelo valor vnovo (ambos passados como parâmetro). Usar o arquivo lista-encadeada.c em anexo, que já possui essa função declarada e algumas funções de apoio. Caso vantigo não exista na lista, ela deve permanecer inalterada. Caso vantigo apareça mais de uma vez na lista, todas as ocorrências devem ser substituídas.
+Entrada:
+
+    lista de inteiros separados por traço, que representa a lista encadeada
+    valor inteiro vantigo que representa o elemento a ser alterado
+    valor inteiro vnovo que representa o novo valor do elemento vantigo
+
+Saída:
+
+    nova lista, impressa usando a função imprime lista
+
+Exemplos:
+Entrada 	Saída
+1-2-3
+2
+5 	        1 5 3
+
+1-5-2-7-3
+1
+99 	        99 5 2 7 3
+
+1-1-7
+1
+99 	        99 99 7
+
+Dicas Importantes:
+
+    A entrada e a saída já são tratadas no arquivo fornecido para ler e imprimir os dados no formato esperado pela questão. Vocês devem APENAS implementar a função solicitada no problema
+
+Como entregar:
+
+    Entreguem via Google Classroom. Vocês podem entregar (num Google Doc) o link do repositório do GitHub que contém a solução, ou fazer o upload de um zip contendo o código-fonte da solução.
