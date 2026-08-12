@@ -32,31 +32,6 @@ TLista* exclui(TLista* li, int valor) {
     return li;
 }
 
-TLista* exclui(TLista* li, int valor) {
-    TLista * prev = NULL;
-    TLista * curr = li;
-
-    while(curr != NULL) {
-        if(curr->info == valor) {
-            if(prev == NULL) {
-                curr = curr->prox;
-                li = curr;
-            } else if(curr->prox == NULL) {
-                prev->prox = NULL;
-                curr = NULL;
-            } else {
-                prev->prox = curr->prox;
-                curr = curr->prox;
-            }
-        } else {
-            prev = curr;
-            curr = curr->prox;
-        }
-    }
-
-    return li;
-}
-
 void imprime_lista(TLista *li) {
     TLista* p;
     for (p = li; p != NULL; p = p->prox)
