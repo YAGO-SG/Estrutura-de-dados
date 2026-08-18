@@ -8,6 +8,40 @@ typedef struct no {
     struct no * dir;
 }Tnoa;
 
+typedef struct list {
+    Tnoa * no;
+    int quant;
+    struct list * prox;
+}Tlist;
+
+int powi(int a, int b) {
+    int res = 1;
+    for(int i = 0; i < b; i++) {
+        res = res * a;
+    }
+    return res;
+}
+
+
+int verifica(Tnoa * arvore, int var) {
+    if(arvore == NULL) {
+        return var;
+    }
+
+    int comp1 = verifica(arvore->esq, var + 1);
+    int comp2 = verifica(arvore->dir, var + 1);
+
+    if(comp1 == comp2 && comp1 != 0 && comp2 != 0) {
+        if(var == 0) {
+            return 1;
+        } else {
+            return (comp1 + comp2);
+        }
+    }  else {
+        return 0;
+    }
+}
+
 void implementaNo(Tnoa * a, int x, int y) {
     Tnoa * novo1 = (Tnoa*) malloc(sizeof(Tnoa));
     Tnoa * novo2 = (Tnoa*) malloc(sizeof(Tnoa));
@@ -38,20 +72,78 @@ void imprimeNo(Tnoa * arv, int a) {
     }
 }
 
-int verificaNo(Tnoa * a) {
-    int no = calculaNo(a);
-    int res = 1;
-    int pot = 1;
-    while(true) {
-        if(no == res) {
-            return 1;
-        } else if (res > no) {
-            return 0;
-        } else {
-            res += powi(2, pot);
-            pot += 1;
-        }
+Tlist * implementaLista(Tlist * lista, Tnoa * bloco) {
+    Tlist * novo = (Tlist*) malloc(sizeof(Tlist));
+    novo->no = bloco;
+    novo->prox = NULL;
+
+    Tlist * p = lista;
+
+    if(p == NULL) {
+        return novo;
     }
+
+
+    while(p->prox != NULL) {
+        p = p->prox;
+    }
+
+    p->prox = novo;
+
+    return lista;
+}
+
+void imprimeLista(Tlist * lista) {
+    while(lista != NULL) {
+        printf("%d ", lista->no->info);
+        lista = lista->prox;
+    }
+}
+
+Tlist * criaListaLargura(Tnoa * no) {
+    Tlist * listaLarg = NULL;
+    listaLarg = implementaLista(listaLarg, no);
+    listaLarg->quant += 1;
+
+    Tlist * aux = listaLarg;
+
+    while(aux != NULL) {
+        if(aux->no->esq || aux->no->dir != NULL) {
+            aux = implementaLista(aux, aux->no->esq);
+            aux = implementaLista(aux, aux->no->dir);
+            listaLarg->quant += 2;
+        }
+
+        aux = aux->prox;
+    } 
+    return listaLarg;
+}
+
+int verificaNo(Tlist * lista) {
+    int nivel = 0;
+    int var = 0;
+    while(var < lista->quant) {
+        var += powi(2, nivel);
+        nivel += 1;
+    }
+    var = 1;
+    while(var < nivel) {
+        int pule = powi(2, var - 1);
+        for(int i = 0; i < pule; i++) {
+            lista = lista->prox;
+        }
+        var += 1;
+    }
+    int quantTotal = 0;
+    while(lista != NULL) {
+        quantTotal += 1;
+        lista = lista->prox;
+    }
+    if(quantTotal == powi(2, nivel - 1)) {
+        return 1;
+    }
+
+    return 0;
 }
 
 
@@ -62,19 +154,18 @@ int main() {
     implementaNo(head, 1, 3);
     implementaNo(head->esq, 34, 54);
     implementaNo(head->dir, 23, 85);
-    implementaNo(head->esq->esq, 86, 95);
 
-    int no = 0;
-    no = calculaNo(head);
+    Tlist * listahead = criaListaLargura(head);
 
     imprimeNo(head, 0);
-    printf(" %d", no);
+    imprimeLista(listahead);
+    printf("\n %d", listahead->quant);
 
-    int verifica = verificaNo(head);
-    if(verifica == 1) {
-        printf("\n A arvore binaria apresentada é do tipo cheia");
-    } else if(verifica == 0) {
-        printf("\n A arvore binarioa não é do tipo cheia");
+    int resultado = verificaNo(listahead);
+    if(resultado == 1) {
+        printf("\n Cheia \n");
+    } else {
+        printf("\n não cheia \n");
     }
 
     return 0;
